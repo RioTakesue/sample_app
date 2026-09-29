@@ -11,5 +11,8 @@ class ActiveSupport::TestCase
   # test/fixtures/*.yml にあるすべてのfixture をセットアップする
   fixtures :all
 
+  # list 5.34 テスト環境でもApplicationヘルパーを使えるようにする
+  include ApplicationHelper
+
   # （すべてのテストで使うその他のヘルパーメソッドは省略）
 end
