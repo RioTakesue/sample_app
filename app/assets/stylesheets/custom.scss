@@ -5,6 +5,13 @@
 
 $gray-medium-light: #eaeaea;
 
+//ミックスイン機能の導入（box_sizingが対象）
+@mixin box_sizing {
+  -moz-box-sizing:    border-box; //古いFirefox用
+  -webkit-box-sizing: border-box; //古いChrome・Safari用
+  box-sizing:         border-box; //標準（現在のブラウザ）用
+}
+
 /* universal */
 
 body {
@@ -95,4 +102,80 @@ footer {
       margin-left: 15px;
     }
   }
+}
+
+/* sidebar */
+//SCSSを使って、サイドバーなどのユーザー表示ページにスタイルを与える
+
+aside {
+  section.user_info {
+    margin-top: 20px;
+  }
+  section {
+    padding: 10px 0;
+    margin-top: 20px;
+    &:first-child {
+      border: 0;
+      padding-top: 0;
+    }
+    span {
+      display: block;
+      margin-bottom: 3px;
+      line-height: 1;
+    }
+    h1 {
+      font-size: 1.4em;
+      text-align: left;
+      letter-spacing: -1px;
+      margin-bottom: 3px;
+      margin-top: 0px;
+    }
+  }
+}
+
+.gravatar {
+  float: left;
+  margin-right: 10px;
+}
+
+.gravatar_edit {
+  margin-top: 15px;
+}
+
+/* forms（ユーザー登録フォーム）　 */
+
+input, textarea {
+  border: 1px solid #bbb;
+  width: 100%;
+  margin-bottom: 15px;
+  @include box_sizing;
+}
+
+input {
+  height: auto !important;
+}
+
+//エラーメッセージにスタイルを与えるためのCSS
+#error_explanation {
+  color: red;
+  ul {
+    color: red;
+    margin: 0 0 30px 0;
+  }
+}
+
+.field_with_errors {
+  @extend .has-error;
+  .form-control {
+    color: $state-danger-text;
+  }
+}
+/* miscellaneous　（その他）　*/
+
+//より見やすいデバッグボックスのコードを追加
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
 }
