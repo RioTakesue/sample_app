@@ -1,2 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 #デフォルトのfixture（テスト用のサンプルデータ）ではメールアドレスが一意になっていない
+
+#ユーザーログインのテストで使うfixture
+
+michael:
+  name: Michael Example
+  email: michael@example.com
+  password_digest: <%= User.digest('password') %>

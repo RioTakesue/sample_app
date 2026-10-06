@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   get "/contact", to: "static_pages#contact"
   get "/signup",  to: "users#new"
 
+  #ログイン機構でRESTfulアクションをgetできるようにする
+  get    "/login",  to: "sessions#new"
+  post   "/login",  to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
+
   #Usersリソースをroutesファイルに追加する
   resources :users
 end
