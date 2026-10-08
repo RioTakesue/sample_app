@@ -18,5 +18,20 @@ class ActiveSupport::TestCase
   # list 5.34 テスト環境でもApplicationヘルパーを使えるようにする
   include ApplicationHelper
 
+  #テストユーザーとしてログイン
+  def log_in_as(user)
+    session[:user_id] = user.id
+  end
+
   # （すべてのテストで使うその他のヘルパーメソッドは省略）
+end
+
+class ActionDispatch::IntegrationTest
+  
+  #テストユーザーとしてログイン
+  def log_in_as(user, password: 'password', remember_me: '1')
+    post login_path, params: { session: { email: user.email,
+                                          password: password,
+                                          remember_me: remember_me } }
+  end
 end

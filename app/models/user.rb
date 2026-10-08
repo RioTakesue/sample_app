@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+
+  #DBには保存されないプログラム上だけの仮想の入れ物（属性）を作成
+  attr_accessor :remember_token
+
   #存在する場合のみ保存前にメールアドレスを小文字に変換
   #before_save { email.downcase! } 破壊的メソッド
   before_save { self.email = email.downcase if email.present? } 
@@ -19,9 +23,41 @@ class User < ApplicationRecord
 
   #fixture向けのdigestメソッドを追加
   #渡された文字列のハッシュ値を返す
-  def User.digest(string)
+  def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine::cost
     BCrypt::Password.create(string, cost: cost)
+  end
+
+
+  #トークン生成用メソッドを追加
+  def self.new_token
+    SecureRandom.urlsafe_base64
+  end
+
+  #永続的セッションのためにユーザーをDBに記憶する
+  #ランダムな合言葉を発行して仮想の入れ物に持っておき
+  #それを暗号化したものをチェックをすり抜けてDBに保存する
+  def remember
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest, User.digest(remember_token))
+    remember_digest
+  end
+
+  #セッションハイジャック防止のためにセッショントークンを返す
+  #この記憶ダイジェストを再利用しているのは単に利便性のため
+  def session_token
+    remember_digest || remember
+  end
+
+  #渡されたトークンがダイジェストと一致したらtrueを返す
+  def authenticated?(remember_token)
+    return false if remember_digest.nil?
+    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  end
+
+  #ユーザーのログイン情報を破棄する
+  def forget
+    update_attribute(:remember_digest, nil)
   end
 end
