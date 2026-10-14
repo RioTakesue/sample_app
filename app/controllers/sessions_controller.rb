@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by(email: params[:session][:email].downcase)
     if @user && @user.authenticate(params[:session][:password])
+      forwarding_url = session[:forwarding_url]
       reset_session #ログイン直前に必ずこれを書く
 
       #remember meチェックボックスの送信結果を処理
@@ -15,7 +16,7 @@ class SessionsController < ApplicationController
       log_in @user
 
       #ユーザーログイン後にユーザー情報のページにリダイレクト
-      redirect_to @user
+      redirect_to forwarding_url || @user
     else
       #エラーメッセージを作成
       flash.now[:danger] = 'Invalid email/password combination' #flash.nowでリクエスト発生時メッセージ消滅
