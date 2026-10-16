@@ -12,4 +12,7 @@ Rails.application.routes.draw do
 
   #Usersリソースをroutesファイルに追加する
   resources :users
+
+  #アカウント有効化に使うリソース（editアクション）を追加する
+  resources :account_activations, only: [:edit]
 end

@@ -1,16 +1,17 @@
 require "test_helper"
 
-class UsersSignupTest < ActionDispatch::IntegrationTest
+class UsersSignup < ActionDispatch::IntegrationTest
 
-  #無効なユーザー登録に対するテスト
+  def setup
+    ActionMailer::Base.deliveries.clear
+  end
+end
+
+class UsersSignupTest < UsersSignup
+  
   test "invalid signup information" do
-
-    #ユーザー登録ページにアクセス
-    get signup_path
-
-    #POSTリクエストをusers_pathに送信
     assert_no_difference 'User.count' do
-      post users_path, params: {
+      post users_path, params: { 
         user: {
           name:  "",
           email: "user@invalid",
@@ -19,33 +20,70 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         }
       }
     end
+
     assert_response :unprocessable_entity
     assert_template 'users/new'
-
-    #エラーメッセージをテストする
     assert_select 'div#error_explanation'
-    assert_select 'div.alert'
+    assert_select 'div.field_with_errors'    
   end
 
-  #有効なユーザー登録に対するテスト
-  test "valid signup information" do
-
-    #ブロック内の処理完了後、ユーザー数が１増えることを検証
+  test "valid signup information with account activation" do
     assert_difference 'User.count', 1 do
       post users_path, params: {
         user: {
-          name: "Example User",
+          name:  "Example User",
           email: "user@example.com",
           password:              "password",
           password_confirmation: "password"
-        } 
+        }
       }
     end
+
+    # 配信されたメッセージが１件かどうかを確認
+    assert_equal 1, ActionMailer::Base.deliveries.size
+  end
+end
+
+class AccountActivationTest < UsersSignup
+  
+  def setup
+    super
+    post users_path, params: {
+      user: {
+        name:  "Example User",
+        email: "user@example.com",
+        password:              "password",
+        password_confirmation: "password"
+      }
+    }
+
+    @user = assigns(:user)
+  end
+
+  test "should not be activated" do
+    assert_not @user.activated?
+  end
+
+  test "should not be able to log in before account activation" do
+    log_in_as(@user)
+    assert_not is_logged_in?
+  end
+
+  test "should not be able to log in with invalid activation token" do
+    get edit_account_activation_path("invalid token", email: @user.email)
+    assert_not is_logged_in?
+  end
+
+  test "should not be able to log in with invalid email" do
+    get edit_account_activation_path(@user.activation_token, email: 'wrong')
+    assert_not is_logged_in?
+  end
+
+  test "should log in successfully with valid activation token and email" do
+    get edit_account_activation_path(@user.activation_token, email: @user.email)
+    assert @user.reload.activated?
     follow_redirect!
     assert_template 'users/show'
     assert is_logged_in?
-
-    #flashが空でないことをテスト
-    assert_not flash.empty?
   end
 end
