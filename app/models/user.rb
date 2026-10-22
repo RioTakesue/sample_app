@@ -1,7 +1,7 @@
 class User < ApplicationRecord
 
   #DBには保存されないプログラム上だけの仮想の入れ物（属性）を作成
-  attr_accessor :remember_token, :activation_token
+  attr_accessor :remember_token, :activation_token, :reset_token
 
   #存在する場合のみ保存前にメールアドレスを小文字に変換
   before_save   :downcase_email
@@ -72,7 +72,23 @@ class User < ApplicationRecord
     UserMailer.account_activation(self).deliver_now
   end
 
+  #パスワード再設定の属性を設定
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_columns(reset_digest: User.digest(reset_token), reset_sent_at: Time.zone.now)
+  end
 
+  #パスワード再設定のメールを送信
+  def sent_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+
+  # パスワード再設定の期限が切れている場合はtrueを返す
+  def password_reset_expired?
+
+    #　送信時刻が現在時刻から２時間より早い時刻
+    reset_sent_at < 2.hours.ago
+  end
   #############################################
   private
 

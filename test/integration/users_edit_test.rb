@@ -29,8 +29,13 @@ class UsersEditTest < ActionDispatch::IntegrationTest
 
     #Check if the forwarding URL is stored in the session
     assert_equal edit_user_url(@user), session[:forwarding_url]
+
     log_in_as(@user)
     assert_redirected_to edit_user_url(@user)
+
+    #Check if the forwarding URL is cleared from the session
+    assert_nil session[:forwarding_url]
+    
     name = "Foo Bar"
     email = "foo@bar.com"
     patch user_path(@user), params: {
