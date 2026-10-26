@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blocked by Cloudflare Gateway</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: #1d1f20;
+        font-family: "Roboto", sans-serif;
+        color: #ffffff;
+      }
+
+      a:link {
+        color: inherit;
+        background-color: transparent;
+        text-decoration: underline;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      #container {
+        min-height: 100vh;
+        display: grid;
+        justify-items: center;
+        align-items: stretch;
+        grid-template-columns: 1fr;
+        grid-template-rows: max-content auto max-content;
+        box-sizing: border-box;
+        padding: 0 20px;
+      }
+
+      header {
+        text-align: center;
+        margin-top: 10vh;
+      }
+
+      main {
+        text-align: center;
+      }
+
+      .org-name {
+        margin: 20px 0 0 0;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 22px;
+      }
+
+      .title {
+        margin: 48px 0 0 0;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 46px;
+        line-height: 54px;
+        text-align: center;
+        white-space: pre-wrap;
+      }
+
+      .footer-text {
+        white-space: pre-wrap;
+      }
+
+      .site {
+        margin: 24px 0 0 0;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 21px;
+      }
+
+      .subtitle {
+        max-width: 600px;
+        margin: 10px 0 0 0;
+        text-align: center;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 21px;
+        flex-grow: 1;
+      }
+      
+      .mt-6 {
+        margin: 24px 0 0 0;
+      }
+
+      .mt-3 {
+        margin: 12px 0 0 0;
+      }
+
+      .block-reason {
+        font-size: 16px;
+      }
+
+      .mailto-address {
+        font-size: 16px;
+      }
+
+      .radar {
+        font-size: 16px;
+      }
+
+      footer {
+        font-style: normal;
+        font-size: 14px;
+        line-height: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0.8;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <header>
+        <svg
+          width="146"
+          height="146"
+          viewBox="0 0 146 146"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <circle cx="73" cy="73" r="73" fill="#F7F7F8" />
+          <path
+            d="M72.7305 56C54.0625 56 43 73.5 43 73.5C43 73.5 54.0625 91 72.7305 91C90.9375 91 102 73.5 102 73.5C102 73.5 90.9375 56 72.7305 56ZM72.5 62.4474C78.6305 62.4474 83.5625 67.375 83.5625 73.5C83.5625 79.625 78.6305 84.5526 72.5 84.5526C66.3695 84.5526 61.4375 79.625 61.4375 73.5C61.4375 67.375 66.3695 62.4474 72.5 62.4474ZM72.5 67.9737C69.4578 67.9737 66.9688 70.4605 66.9688 73.5C66.9688 76.5395 69.4578 79.0263 72.5 79.0263C75.5422 79.0263 78.0312 76.5395 78.0312 73.5C78.0312 72.625 77.8524 71.8481 77.4837 71.1108C77.161 71.4792 76.6941 71.6579 76.187 71.6579C75.173 71.6579 74.3433 70.8289 74.3433 69.8158C74.3433 69.3092 74.5221 68.8427 74.8909 68.5203C74.1534 68.1519 73.3758 67.9732 72.4995 67.9732L72.5 67.9737Z"
+            fill="#1D1F20"
+          />
+          <line
+            x1="105"
+            y1="40.8284"
+            x2="37.8284"
+            y2="108"
+            stroke="#1D1F20"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <div class="org-name"></div>
+        <h1 class="title">Access restricted</h1>
+      </header>
+      <main>
+        <div class="site" id="domain">Site: cdn.learnenough.com</div>
+        <div class="subtitle">
+          <div class="footer-text">This site is blocked. Please contact your administrator for further assistance.</div>
+          <div class="mt-6"></div>
+          <div class="block-reason">Domain is not in the corporate allowlist.</div>
+          <div class="mt-6"></div>
+          
+        </div>
+      </main>
+      <footer>
+        <div class="radar">Look up this site on <a href="https://radar.cloudflare.com/domain/cdn.learnenough.com">Cloudflare Radar</a> for more information.</div>
+        <div class="mt-3"></div>
+        <div>Rule ID: 142b3b94-c95b-4947-8faf-d2b73d19c140 • Source IP: 58.157.192.49 • Location: 45325805a2e044f0822b3d27b7b12163 • Time: October 26, 2026 at 12:50:13 AM UTC </div>
+        <div>Account ID: 563f20bcddb91912ef0be083c7c11f3a • Query ID: 9b1a93d0-86f1-42e6-a0eb-ac8116926b78</div>
+      </footer>
+    </div>
+  </body>
+</html>
+

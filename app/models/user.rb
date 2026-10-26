@@ -1,5 +1,8 @@
 class User < ApplicationRecord
 
+  # ユーザーがマイクロポストを複数所有する関連付け
+  has_many :microposts, dependent: :destroy
+
   #DBには保存されないプログラム上だけの仮想の入れ物（属性）を作成
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -89,6 +92,13 @@ class User < ApplicationRecord
     #　送信時刻が現在時刻から２時間より早い時刻
     reset_sent_at < 2.hours.ago
   end
+
+  # 試作feedの定義
+  # 完全な実装は14章
+  def feed
+    Micropost.where("user_id = ?", id)
+  end
+  
   #############################################
   private
 

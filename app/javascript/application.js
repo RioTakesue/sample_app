@@ -4,3 +4,6 @@ import "controllers"
 
 //ドロップダウンメニューのJavaScriptをインポート
 import "custom/menu"
+
+// 画像サイズチェック用のJavaScriptコードをインポート
+import "custom/image_upload"
