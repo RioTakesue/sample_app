@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
 
   #Usersリソースをroutesファイルに追加する
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
 
   #アカウント有効化に使うリソース（editアクション）を追加する
   resources :account_activations, only: [:edit]
@@ -23,6 +27,8 @@ Rails.application.routes.draw do
 
   # マイクロポストリソースのルーティング
   resources :microposts,          only: [:create, :destroy]
+
+  resources :relationships,       only: [:create, :destroy]
 
   get '/microposts', to: 'static_pages#home'
 end

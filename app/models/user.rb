@@ -3,6 +3,22 @@ class User < ApplicationRecord
   # ユーザーがマイクロポストを複数所有する関連付け
   has_many :microposts, dependent: :destroy
 
+  # 能動的関係のhas_many関連付けを実装する
+  has_many :active_relationships,
+  class_name:  "Relationship",
+  foreign_key: "follower_id",
+  dependent:   :destroy
+
+  #　受動的関係
+  has_many :passive_relationships,
+  class_name:  "Relationship",
+  foreign_key: "followed_id",
+  dependent:   :destroy
+
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
+
+
   #DBには保存されないプログラム上だけの仮想の入れ物（属性）を作成
   attr_accessor :remember_token, :activation_token, :reset_token
 
@@ -96,9 +112,33 @@ class User < ApplicationRecord
   # 試作feedの定義
   # 完全な実装は14章
   def feed
-    Micropost.where("user_id = ?", id)
+    Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
   end
-  
+
+
+  # ユーザーをフォローする
+  def follow(other_user)
+    following << other_user unless self == other_user
+  end
+
+  # ユーザーをフォロー解除する
+  def unfollow(other_user)
+    following.delete(other_user)
+  end
+
+  # 現在のユーザーが他のユーザーをフォローしていればtrueを返す
+  def following?(other_user)
+    following.include?(other_user)
+  end
+
+  # ユーザーのステータスフィードを返す
+  def feed
+    following_ids = "SELECT followed_id FROM relationships
+                     WHERE  follower_id = :user_id"
+    Micropost.where("user_id IN (#{following_ids}) 
+                     OR user_id = :user_id", user_id: id)
+             .includes(:user, image_attachment: :blob)
+  end
   #############################################
   private
 
